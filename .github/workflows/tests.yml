@@ -1,0 +1,33 @@
+# CI workflow for running automated Python tests
+name: Python Tests
+
+# Trigger the workflow on pushes and pull requests
+on: [push, pull_request]
+
+# We define the steps that the workflow will execute
+jobs:
+  test:
+    # Test on Linux to catch issues that may not appear on Windows
+    runs-on: ubuntu-latest
+
+    steps:
+      # Download the repository code to the GitHub runner
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Set up the Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.15'
+
+      # Install project dependencies required by the application and tests
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      # Run all automated tests using pytest
+      - name: Run tests
+        run: python -m pytest -v
+
+
+
