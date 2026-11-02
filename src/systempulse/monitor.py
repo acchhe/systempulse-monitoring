@@ -42,9 +42,31 @@ def check_website(url):
             }
 
 
+def check_multiple_websites(urls: list[str]):
+
+    results = []
+
+    for url in urls:
+        result = check_website(url)
+        results.append(result)
+
+    return results
 
 
 
 if __name__ == "__main__":
     status = check_website("https://www.youtube.com/")
     print(status)
+    print("\n###########")
+    urls = [
+    "https://github.com/",
+    "https://google.com/",
+    "https://youtube.com/"
+     ]
+    
+    multi_status = check_multiple_websites(urls)
+    for result in multi_status:
+        print(multi_status)
+
+
+
