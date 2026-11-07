@@ -1,5 +1,5 @@
 from unittest.mock import patch, Mock
-from src.systempulse.monitor import check_website,check_multiple_websites
+from src.systempulse.monitor import check_website,check_multiple_websites,summarize_results
 import requests
 
 
@@ -89,8 +89,23 @@ def test_multiple_websites():
 
              
 
-             
+def test_summarize():
 
+    results = [
+        {"url" : "https://github.com",
+        "status" : "UP"},
 
-         
+         {"url" : "https://youtube.com",
+          "status" : "UP"},
 
+         {"url" : "https://example.com",
+         "status" : "DOWN"}
+    ]
+
+    summary = summarize_results(results)
+
+    assert summary["total websites"] == 3
+
+    assert summary["websites up"] == 2
+
+    assert summary["websites down"] == 1

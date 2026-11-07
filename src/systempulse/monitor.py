@@ -52,6 +52,22 @@ def check_multiple_websites(urls: list[str]):
 
     return results
 
+def summarize_results(results: list[dict]):
+
+    up_count = 0
+    down_count = 0
+
+    total = len(results)
+
+    for result in results:
+        if result["status"] == "UP":
+            up_count +=1
+
+        else: down_count +=1
+
+    return {"total websites" : total,
+            "websites down" : down_count,
+            "websites up" : up_count}
 
 
 if __name__ == "__main__":
@@ -66,7 +82,18 @@ if __name__ == "__main__":
     
     multi_status = check_multiple_websites(urls)
     for result in multi_status:
-        print(multi_status)
+        print(result)
+ 
+    test_results = [
+    {"url": "https://github.com/", "status": "UP"},
+    {"url": "https://google.com/", "status": "UP"},
+    {"url": "https://example.com/", "status": "DOWN"}
+    
+    ]
+    
+    print("#####################\n")
+    summary = summarize_results(test_results)
+    print(summary) 
 
 
 
