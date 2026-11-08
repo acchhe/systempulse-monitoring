@@ -1,6 +1,7 @@
 from unittest.mock import patch, Mock
 from src.systempulse.monitor import check_website,check_multiple_websites,summarize_results
 import requests
+import logging
 
 
 
@@ -109,3 +110,38 @@ def test_summarize():
     assert summary["websites up"] == 2
 
     assert summary["websites down"] == 1
+
+
+
+def test_logging_up(caplog):
+
+    mock_response = Mock()
+    mock_response.status_code = 200
+
+    with patch("src.systempulse.monitor.requests.get") as mock_get:
+        mock_get.return_value = mock_response
+
+        with caplog.at_level(logging.INFO):
+            result = check_website("https://example.com/")
+
+        assert f"website: {result['url']} is UP" in caplog.text
+
+        assert result["status"] == "UP"
+
+
+def test_logging_down(caplog):
+
+    mock_response = Mock()
+    mock_response.status_code = 500
+
+    with patch("src.systempulse.monitor.requests.get") as mock_get:
+
+        mock_get.return_value = mock_response
+
+        with caplog.at_level(logging.ERROR):
+            result = check_website("https://example.com")
+
+        
+        assert f"website: {result['url']} is DOWN" in caplog.text
+
+        assert result['status'] == "DOWN"
