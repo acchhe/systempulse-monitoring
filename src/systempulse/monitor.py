@@ -1,6 +1,8 @@
 import requests
 import time
+import logging
 
+logging.basicConfig(level=logging.INFO)
 
 
 def check_website(url):
@@ -19,8 +21,10 @@ def check_website(url):
 
         if 200 <= response.status_code <= 399:
            status = "UP"
+           logging.info(f"website: {url} is UP")
         else:
             status = "DOWN"
+            logging.error(f"website: {url} is DOWN")
 
         result = {
             "url" : url,
@@ -33,13 +37,17 @@ def check_website(url):
         return result
 
     
-    except requests.exceptions.RequestException:
+    except requests.exceptions.RequestException as e:
+
+        logging.error(f"{url} doesn't respond. {e}")
         return {
             "url": url,
             "status": "DOWN",
             "status_code": None,
             "response_time_ms": None
             }
+
+
 
 
 def check_multiple_websites(urls: list[str]):
@@ -94,6 +102,8 @@ if __name__ == "__main__":
     print("#####################\n")
     summary = summarize_results(test_results)
     print(summary) 
+
+    check_website("http://127.0.0.1:1")
 
 
 
