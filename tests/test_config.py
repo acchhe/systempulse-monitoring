@@ -59,3 +59,54 @@ def test_missing_website_key(tmp_path):
     with pytest.raises(ValueError):
         load_config(file_path)
 
+
+def test_negative_check_interval(tmp_path):
+
+    file_path = tmp_path / "test.json"
+
+    file_path.write_text(
+    '{"websites": ["https://example.com"], "check_interval": -5}'
+)
+
+    with pytest.raises(ValueError):
+        load_config(file_path)
+
+
+def test_interval_type(tmp_path):
+
+    file_path = tmp_path / "test.json"
+
+    file_path.write_text(
+    '{"websites": ["https://example.com"], "check_interval": "hello"}'
+    )
+
+    with pytest.raises(ValueError):
+            load_config(file_path)
+
+
+
+
+def test_default_check_interval(tmp_path):
+    file_path = tmp_path / "test_config.json"
+
+    file_path.write_text(
+        '{"websites": ["https://example.com"]}'
+    )
+
+    result = load_config(file_path)
+
+    assert result["check_interval"] == 60
+
+
+def test_boolean_check_interval(tmp_path):
+    file_path = tmp_path / "test_config.json"
+
+    file_path.write_text(
+        '{"websites": ["https://example.com"], "check_interval": true}'
+    )
+
+    with pytest.raises(ValueError):
+        load_config(file_path)
+
+
+

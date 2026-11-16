@@ -1,15 +1,17 @@
-from src.systempulse.config import load_config
-from src.systempulse.monitor import check_multiple_websites
+from src.systempulse.scheduler import run_monitoring
 
-path = "./config.json"
 
-data = load_config(path)
+def main():
+    try:
+        run_monitoring("./config.json")
 
-urls = data['websites']
+    except KeyboardInterrupt:
+        print("\nMonitoring stopped by user.")
 
-results = check_multiple_websites(urls)
 
-for url in results:
-    print(url)
+if __name__ == "__main__":
+    main()
+
+
 
 
