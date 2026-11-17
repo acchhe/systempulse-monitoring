@@ -1,5 +1,7 @@
 from src.systempulse.scheduler import run_monitoring
+import os
 
+check_interval = int(os.getenv("CHECK_INTERVAL", "5"))
 
 def main():
     try:

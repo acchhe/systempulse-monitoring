@@ -1,0 +1,10 @@
+services:
+  systempulse:
+    build: .
+    restart: unless-stopped
+    environment:
+      CHECK_INTERVAL: "15"
+
+
+
+
